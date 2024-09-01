@@ -1,1 +1,1 @@
-# Rag_Project_Pod
+# Knowledge Base Assistant - Market Research FAQ
