@@ -1,1 +1,1 @@
-# Knowledge Base Assistant - Market Research FAQ
+# Knowledge Base Assistant - Syndicated Research FAQ
