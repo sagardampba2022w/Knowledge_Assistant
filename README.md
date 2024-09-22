@@ -116,6 +116,9 @@ The following table shows the evaluation results for different LLMs based on **M
 | LLaMA-8B      | 0.734798    | 0.751954      | 0.124470           |
 | LLaMA-70B     | 0.738416    | 0.757077      | 0.132759           |
 
+![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Assets/output.png)
+
+
 These metrics provide insight into how closely the generated responses matched the context retrieved by the RAG search in terms of cosine similarity.
 
 
@@ -125,7 +128,7 @@ These metrics provide insight into how closely the generated responses matched t
    - **AQA (Answer + Question Answer)**: In this approach, the original QA pair along with the LLM-generated answer were passed to another LLM (GPT-4o-mini) to evaluate the relevance of the response.
    - **QA (Question + Answer)**: In this approach, only the question and the LLM-generated answer were passed to the judge, without the original answer, for relevance evaluation.
 
-### LLMs Tested
+#### LLMs Tested
 
 Various LLMs were tested for both approaches:
 
@@ -141,7 +144,7 @@ Various LLMs were tested for both approaches:
   - LLaMA 8B
   - LLaMA 70B
 
-### AQA Evaluation (LLM Answer + Original Question Answer)
+##### AQA Evaluation (LLM Answer + Original Question Answer)
 
 | LLM Model       | Relevant (%) | Partially Relevant (%) | Non-Relevant (%) |
 |-----------------|--------------|------------------------|------------------|
@@ -150,7 +153,7 @@ Various LLMs were tested for both approaches:
 | LLaMA-8B AQA    | **75.92**    | 23.46                  | 0.62             |
 | LLaMA-70B AQA   | **75.92**    | 23.69                  | 0.38             |
 
-### QA Evaluation (Original Question + LLM Answer)
+##### QA Evaluation (Original Question + LLM Answer)
 
 | LLM Model       | Relevant (%) | Partially Relevant (%) | Non-Relevant (%) |
 |-----------------|--------------|------------------------|------------------|
