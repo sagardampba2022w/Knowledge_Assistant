@@ -100,6 +100,22 @@ These approaches were evaluated using the following metrics:
 - **Hit Rate**: The percentage of relevant documents retrieved.
 - **MRR (Mean Reciprocal Rank)**: A measure of how well the ranking of the relevant results was optimized.
 
+
+### RAG Search Evaluation - Performance Metrics
+
+| Search Method                                         | Hit Rate   | Mean Reciprocal Rank (MRR) |
+|-------------------------------------------------------|------------|----------------------------|
+| Text Search                                           | 0.7292     | 0.4804                     |
+| Question Vector                                       | 0.8154     | 0.6720                     |
+| Answer Vector                                         | 0.9000     | 0.7621                     |
+| Combined Question + Answer Vector                     | 0.8815     | 0.7473                     |
+| Hybrid (Question Vector + Keyword)                    | 0.8631     | 0.6993                     |
+| Hybrid (Answer Vector + Keyword)                      | 0.8685     | 0.7042                     |
+| Hybrid (Combined QA Vector + Keyword)                 | 0.8608     | 0.6975                     |
+| Hybrid (Combined QA Vector + Keyword) + RRF           | **0.9162** | **0.7835**                 |
+
+
+
 ### LLM Response Evaluation
 
 The LLM responses were evaluated using two methods:
@@ -163,3 +179,6 @@ Various LLMs were tested for both approaches:
 | LLaMA-70B QA    | **93.46**    | 6.23                   | 0.31             |
 
 These evaluations were used to assess the performance of different LLMs in terms of how well they generate relevant and accurate answers based on the user’s query.
+
+
+
