@@ -1,115 +1,121 @@
-# app.py
+import uuid
+import time
+import logging
 
 import streamlit as st
-from elasticsearch_module import ElasticsearchModule
-from llm_module import LLMModule
-from rag_module import RAGModule
-from database_module import initialize_database, save_interaction, update_feedback, Session, UserInteraction
-from evaluation_metrics import EvaluationMetrics
 
-# Load environment variables
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
-# Initialize the database
-initialize_database()
-
-# Initialize modules
-es_module = ElasticsearchModule()
-
-# Get API keys from environment variables
-openai_api_key = os.getenv('OPENAI_API_KEY')  # Ensure this is set
-groq_api_key = os.getenv('GROQ_API_KEY')      # Ensure this is set
-
-llm_module = LLMModule(openai_api_key=openai_api_key, groq_api_key=groq_api_key)
-rag_module = RAGModule(es_module, llm_module)
-eval_metrics = EvaluationMetrics()
-
-# Streamlit app
-st.title("LLM-based RAG Streamlit App")
-
-# User Input
-question = st.text_input("Enter your question:")
-model_selected = st.selectbox(
-    "Choose an LLM model:",
-    ("gpt-4o-mini", "llama70b")  # Updated model options
+from assistant import get_answer
+from db import (
+    save_conversation,
+    save_feedback,
+    get_recent_conversations,
+    get_feedback_stats,
 )
 
-if st.button("Submit"):
-    if question:
-        with st.spinner('Generating answer...'):
-            # Get the answer from the RAG system
-            answer, search_results = rag_module.rag(question, model=model_selected)
-            st.write("### Answer:")
-            st.write(answer)
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-            # Save the interaction
-            interaction_id = save_interaction(question, answer, model_selected)
+# Constants
+MODEL_OPTIONS = [
+    "gpt-3.5-turbo",
+    "gpt-4o-mini",
+    "llama3-70b-8192",
+    # Add other models if needed
+]
 
-            # Store interaction ID in session state for feedback
-            st.session_state['interaction_id'] = interaction_id
-            st.session_state['answer'] = answer
-            st.session_state['question'] = question
+def initialize_session_state():
+    st.session_state.setdefault('conversation_id', str(uuid.uuid4()))
+    st.session_state.setdefault('count', 0)
 
-            # Optionally display retrieved documents
-            if st.checkbox("Show retrieved context"):
-                for idx, doc in enumerate(search_results):
-                    st.write(f"**Document {idx+1}:**")
-                    st.write(f"Category: {doc['Category']}")
-                    st.write(f"Question: {doc['Question']}")
-                    st.write(f"Answer: {doc['Answer']}\n")
-    else:
-        st.error("Please enter a question.")
+def get_user_input():
+    with st.form(key='question_form'):
+        model_choice = st.selectbox("Select a model:", MODEL_OPTIONS)
+        search_type = st.radio("Select search type:", ["Text", "Vector"])
+        user_input = st.text_input("Enter your question:")
+        submit_button = st.form_submit_button(label='Ask')
+    return model_choice, search_type, user_input, submit_button
 
-# Feedback Mechanism
-if 'answer' in st.session_state:
-    st.write("### Was this answer helpful?")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("👍 Yes"):
-            update_feedback(st.session_state['interaction_id'], True)
-            st.success("Thank you for your feedback!")
-            # Clean up session state
-            for key in ['interaction_id', 'answer', 'question']:
-                st.session_state.pop(key, None)
-    with col2:
-        if st.button("👎 No"):
-            update_feedback(st.session_state['interaction_id'], False)
-            st.success("Thank you for your feedback!")
-            # Clean up session state
-            for key in ['interaction_id', 'answer', 'question']:
-                st.session_state.pop(key, None)
+def display_answer(answer_data):
+    st.success("Completed!")
+    st.write(answer_data["answer"])
+    # Display monitoring information
+    st.write(f"Response time: {answer_data['response_time']:.2f} seconds")
+    st.write(f"Relevance: {answer_data['relevance']}")
+    st.write(f"Model used: {answer_data['model_used']}")
+    st.write(f"Total tokens: {answer_data['total_tokens']}")
+    if answer_data["openai_cost"] > 0:
+        st.write(f"OpenAI cost: ${answer_data['openai_cost']:.4f}")
 
-# Evaluation Metrics (Admin Section)
-if st.sidebar.checkbox("Show Evaluation Metrics"):
-    session = Session()
-    interactions = session.query(UserInteraction).filter(UserInteraction.feedback != None).all()
-    session.close()
+def handle_feedback(conversation_id):
+    feedback = st.radio("Was this answer helpful?", ("Yes", "No"))
+    if feedback:
+        feedback_value = 1 if feedback == "Yes" else -1
+        save_feedback(conversation_id, feedback_value)
+        st.success("Thank you for your feedback!")
 
-    # Prepare relevance data
-    relevance_total = [[interaction.feedback] for interaction in interactions]
+def display_recent_conversations():
+    with st.expander("Recent Conversations"):
+        relevance_filter = st.selectbox(
+            "Filter by relevance:", ["All", "RELEVANT", "PARTLY_RELEVANT", "NON_RELEVANT"]
+        )
+        recent_conversations = get_recent_conversations(
+            limit=5, relevance=relevance_filter if relevance_filter != "All" else None
+        )
+        for conv in recent_conversations:
+            st.write(f"Q: {conv['question']}")
+            st.write(f"A: {conv['answer']}")
+            st.write(f"Relevance: {conv['relevance']}")
+            st.write(f"Model: {conv['model_used']}")
+            st.write("---")
 
-    # Compute metrics
-    hr = eval_metrics.hit_rate(relevance_total)
-    mrr_score = eval_metrics.mrr(relevance_total)
+def display_feedback_stats():
+    feedback_stats = get_feedback_stats()
+    st.subheader("Feedback Statistics")
+    st.write(f"Thumbs up: {feedback_stats['thumbs_up']}")
+    st.write(f"Thumbs down: {feedback_stats['thumbs_down']}")
 
-    st.sidebar.write(f"**Hit Rate:** {hr:.2f}")
-    st.sidebar.write(f"**MRR:** {mrr_score:.2f}")
+def main():
+    logger.info("Starting the Course Assistant application")
+    st.title("Course Assistant")
 
-# Cosine Similarity Evaluation
-if st.sidebar.checkbox("Compute Cosine Similarity"):
-    # Retrieve ground truth answer from your data source
-    # Implement get_ground_truth_answer function
-    def get_ground_truth_answer(question):
-        # This function should return the ground truth answer for the given question
-        # Implement this according to your data source
-        return None  # Placeholder
+    # Initialize session state
+    initialize_session_state()
 
-    ground_truth_answer = get_ground_truth_answer(st.session_state.get('question', ''))
+    # Get user input
+    model_choice, search_type, user_input, submit_button = get_user_input()
 
-    if ground_truth_answer and 'answer' in st.session_state:
-        similarity = eval_metrics.compute_similarity(ground_truth_answer, st.session_state['answer'])
-        st.sidebar.write(f"**Cosine Similarity:** {similarity:.2f}")
-    else:
-        st.sidebar.write("Ground truth answer not available or no answer generated yet.")
+    if submit_button and user_input:
+        logger.info(f"User asked: '{user_input}'")
+        with st.spinner("Processing..."):
+            try:
+                logger.info(f"Getting answer from assistant using {model_choice} model and {search_type} search")
+                start_time = time.time()
+                answer_data = get_answer(user_input, model_choice, search_type)
+                end_time = time.time()
+                logger.info(f"Answer received in {end_time - start_time:.2f} seconds")
+                display_answer(answer_data)
+                # Save conversation to database
+                logger.info("Saving conversation to database")
+                save_conversation(
+                    st.session_state.conversation_id, user_input, answer_data
+                )
+                logger.info("Conversation saved successfully")
+                # Generate a new conversation ID for next question
+                st.session_state.conversation_id = str(uuid.uuid4())
+            except Exception as e:
+                logger.error(f"Error getting answer: {e}")
+                st.error("An error occurred while processing your request.")
+                return
+
+        # Handle feedback
+        handle_feedback(st.session_state.conversation_id)
+
+    # Display recent conversations
+    display_recent_conversations()
+
+    # Display feedback statistics
+    display_feedback_stats()
+
+if __name__ == "__main__":
+    main()

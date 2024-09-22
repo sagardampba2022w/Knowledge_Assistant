@@ -1,9 +1,8 @@
-streamlit
-openai
-groq  # Replace with the actual package name if different
-elasticsearch
-sentence-transformers
-sqlalchemy
-psycopg2-binary
-tqdm
-python-dotenv
+streamlit==1.25.0
+psycopg2-binary==2.9.6
+elasticsearch==8.9.0
+sentence-transformers==2.2.2
+requests==2.31.0
+tqdm==4.66.1
+python-dotenv==1.0.0
+openai==0.27.8
