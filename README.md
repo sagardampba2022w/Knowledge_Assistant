@@ -65,35 +65,7 @@ Multiple approaches were evaluated using **Elasticsearch** to optimize the retri
 2. **Vector Search (with matching Question)**: Using vector embeddings of the user's question to retrieve semantically similar content.
 3. **Vector Search (with matching Answers)**: Using embeddings of potential answers to retrieve documents that contain semantically related answers.
 4. **Vector Search (with matching Question and Answers)**: Combining both question and answer embeddings for a more comprehensive retrieval approach.
-5. **Hybrid Search (Vector & Text Search)**: A combined approach that integrates both vector-based and traditional text search for improved accuracy.
-6. **Hybrid Search (Vector & Text Search) + RRF Implementation**: Incorporating Rank Reciprocal Fusion (RRF) to merge and rank results from different search methods for optimal relevance.
-
-These approaches were evaluated using the following metrics:
-- **Hit Rate**: The percentage of relevant documents retrieved.
-- **MRR (Mean Reciprocal Rank)**: A measure of how well the ranking of the relevant results was optimized.
-
-### LLM Response Evaluation
-
-After retrieving relevant data via the RAG search, the **LLMs (OpenAI & Groq)** generate the final user response. The quality of the LLM responses was evaluated based on:
-
-- **Relevance**: Assessed using three categories:
-  - **Relevant**: The response fully addresses the query.
-  - **Partially Relevant**: The response addresses part of the query but is incomplete.
-  - **Not Relevant**: The response does not address the query.
-  
-These evaluations ensure that both the retrieval mechanism and the LLM-generated responses meet high standards of accuracy and relevance.
-
-## Evaluations
-
-### RAG Search Evaluation
-
-Multiple approaches were evaluated using **Elasticsearch** to optimize the retrieval of relevant data. The approaches tested include:
-
-1. **Text Search**: A traditional full-text search using keywords from the user's question.
-2. **Vector Search (with matching Question)**: Using vector embeddings of the user's question to retrieve semantically similar content.
-3. **Vector Search (with matching Answers)**: Using embeddings of potential answers to retrieve documents that contain semantically related answers.
-4. **Vector Search (with matching Question and Answers)**: Combining both question and answer embeddings for a more comprehensive retrieval approach.
-5. **Hybrid Search (Vector & Text Search)**: A combined approach that integrates both vector-based and traditional text search for improved accuracy.
+5. **Hybrid Search (Vector  & Text Search)**: A combined approach that integrates both vector-based and traditional text search for improved accuracy.
 6. **Hybrid Search (Vector & Text Search) + RRF Implementation**: Incorporating Rank Reciprocal Fusion (RRF) to merge and rank results from different search methods for optimal relevance.
 
 These approaches were evaluated using the following metrics:

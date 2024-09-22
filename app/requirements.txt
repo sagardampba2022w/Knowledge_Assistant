@@ -1,1 +1,9 @@
-groq
+streamlit
+openai
+groq  # Replace with the actual package name if different
+elasticsearch
+sentence-transformers
+sqlalchemy
+psycopg2-binary
+tqdm
+python-dotenv
