@@ -61,7 +61,7 @@ def display_answer(answer_data):
 
 
 def handle_feedback(conversation_id):
-    feedback = st.radio("Was this answer helpful?", ("Yes", "No"))
+    feedback = st.radio("Was this answer helpful?", ("Yes", "No"), index=-1)
     if feedback:
         feedback_value = 1 if feedback == "Yes" else -1
         logger.info(f"Feedback received for conversation {conversation_id}: {feedback_value}")
@@ -73,6 +73,7 @@ def handle_feedback(conversation_id):
         except Exception as e:
             logger.error(f"Error saving feedback: {e}")
             st.error("An error occurred while saving feedback.")
+
 
 
 def display_recent_conversations():

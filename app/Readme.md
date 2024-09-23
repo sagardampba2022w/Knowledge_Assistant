@@ -1,6 +1,6 @@
 # Research Knowledge Base Assistant - Local Environment Setup
 
-This guide provides instructions to set up and test the Research Knowledge Base Assistant locally using Docker and PostgreSQL.
+This guide provides instructions to set up and test the Research Knowledge Base Assistant locally using Docker, PostgreSQL, Streamlit & Grafana.
 
 ## Prerequisites
 
