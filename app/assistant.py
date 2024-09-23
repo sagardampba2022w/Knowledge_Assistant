@@ -68,7 +68,7 @@ INDEX_NAME = "insights-questions"
 
 def llm(prompt, model_choice):
     start_time = time.time()
-    if model_choice in ['gpt-3.5-turbo', 'gpt-4o-mini']:  # OpenAI models
+    if model_choice in ['gpt-4o-mini']:  # OpenAI models
         response = openai_client.chat.completions.create(
             model=model_choice,
             messages=[{"role": "user", "content": prompt}]
