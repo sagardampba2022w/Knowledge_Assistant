@@ -13,30 +13,23 @@ from groq import Groq  # Assuming there's a 'groq' Python package available
 load_dotenv()
 
 # Configure logging
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize OpenAI and Groq API keys from environment variables
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
-# Path to Docker secrets
-openai_api_key_path = '/run/secrets/openai_api_key'
-groq_api_key_path = '/run/secrets/groq_api_key'
+# Log the loading of API keys
+if not OPENAI_API_KEY:
+    logger.warning("OpenAI API key not provided. Ensure that OPENAI_API_KEY is set in your environment variables.")
+else:
+    logger.info("OpenAI API key loaded successfully.")
 
-# Initialize OpenAI and Groq API keys from Docker secrets or environment variables
-try:
-    with open(openai_api_key_path, 'r') as file:
-        OPENAI_API_KEY = file.read().strip()
-    logger.info("Loaded OpenAI API key from Docker secret.")
-except FileNotFoundError:
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-api-key")
-    logger.warning("OpenAI API key file not found. Using environment variable instead.")
-
-try:
-    with open(groq_api_key_path, 'r') as file:
-        GROQ_API_KEY = file.read().strip()
-    logger.info("Loaded Groq API key from Docker secret.")
-except FileNotFoundError:
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "your-groq-api-key")
-    logger.warning("Groq API key file not found. Using environment variable instead.")
-
+if not GROQ_API_KEY:
+    logger.warning("Groq API key not provided. Ensure that GROQ_API_KEY is set in your environment variables.")
+else:
+    logger.info("Groq API key loaded successfully.")
 
 # Constants
 COST_RATES = {
@@ -46,8 +39,6 @@ COST_RATES = {
 }
 
 ELASTIC_URL = os.getenv("ELASTIC_URL", "http://localhost:9200")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-api-key")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "your-groq-api-key")
 
 # Initialize Elasticsearch client
 es_client = Elasticsearch(ELASTIC_URL)
@@ -57,7 +48,10 @@ os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 openai_client = OpenAI()
 
 # Initialize Groq client
-client_groq = Groq(api_key=GROQ_API_KEY)
+if GROQ_API_KEY:
+    client_groq = Groq(api_key=GROQ_API_KEY)
+else:
+    client_groq = None  # Handle the case when Groq API is not available
 
 # Load the SentenceTransformer model
 model_name = 'multi-qa-MiniLM-L6-cos-v1'
@@ -67,30 +61,37 @@ model = SentenceTransformer(model_name)
 INDEX_NAME = "insights-questions"
 
 def llm(prompt, model_choice):
+    """Handles interaction with OpenAI and Groq LLMs"""
     start_time = time.time()
-    if model_choice in ['gpt-4o-mini']:  # OpenAI models
-        response = openai_client.chat.completions.create(
-            model=model_choice,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        answer = response.choices[0].message.content
-        tokens = {
-            'prompt_tokens': response.usage.prompt_tokens,
-            'completion_tokens': response.usage.completion_tokens,
-            'total_tokens': response.usage.total_tokens
-        }
-    else:  # Use Groq client for other models
-        response = client_groq.chat.completions.create(
-            model=model_choice,  # e.g., 'llama3-70b-8192'
-            messages=[{"role": "user", "content": prompt}]
-        )
-        answer = response.choices[0].message.content
-        # Assuming Groq API provides token usage information
-        tokens = {
-            'prompt_tokens': response.usage.get('prompt_tokens', 0),
-            'completion_tokens': response.usage.get('completion_tokens', 0),
-            'total_tokens': response.usage.get('total_tokens', 0)
-        }
+    try:
+        if model_choice in ['gpt-4o-mini']:  # OpenAI models
+            response = openai_client.chat.completions.create(
+                model=model_choice,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            answer = response.choices[0].message.content
+            tokens = {
+                'prompt_tokens': response.usage.prompt_tokens,
+                'completion_tokens': response.usage.completion_tokens,
+                'total_tokens': response.usage.total_tokens
+            }
+        elif client_groq:  # Use Groq client for Groq models
+            response = client_groq.chat.completions.create(
+                model=model_choice,  # e.g., 'llama3-70b-8192'
+                messages=[{"role": "user", "content": prompt}]
+            )
+            answer = response.choices[0].message.content
+            tokens = {
+                'prompt_tokens': response.usage.get('prompt_tokens', 0),
+                'completion_tokens': response.usage.get('completion_tokens', 0),
+                'total_tokens': response.usage.get('total_tokens', 0)
+            }
+        else:
+            raise ValueError(f"Groq API key not found, unable to use model: {model_choice}")
+    except Exception as e:
+        logger.error(f"Error during LLM request: {e}")
+        answer, tokens = "Error generating response", {}
+    
     end_time = time.time()
     response_time = end_time - start_time
     return answer, tokens, response_time
@@ -142,30 +143,21 @@ def elastic_search_hybrid_rrf(field, query, vector, k=60):
     # KNN Search
     knn_results = es_client.search(
         index=INDEX_NAME,
-        body={
-            "knn": knn_query,
-            "size": 10
-        }
+        body={"knn": knn_query, "size": 10}
     )['hits']['hits']
 
     # Keyword Search
     keyword_results = es_client.search(
         index=INDEX_NAME,
-        body={
-            "query": keyword_query,
-            "size": 10
-        }
+        body={"query": keyword_query, "size": 10}
     )['hits']['hits']
 
     # Reciprocal Rank Fusion (RRF) scoring
     rrf_scores = {}
-
-    # Calculate RRF scores for KNN results
     for rank, hit in enumerate(knn_results):
         doc_id = hit['_id']
         rrf_scores[doc_id] = compute_rrf(rank + 1, k)
 
-    # Calculate RRF scores for keyword results
     for rank, hit in enumerate(keyword_results):
         doc_id = hit['_id']
         if doc_id in rrf_scores:
@@ -173,15 +165,9 @@ def elastic_search_hybrid_rrf(field, query, vector, k=60):
         else:
             rrf_scores[doc_id] = compute_rrf(rank + 1, k)
 
-    # Sort RRF scores in descending order
     reranked_docs = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)
-
-    # Get top-K documents by the score
-    final_results = []
-    for doc_id, score in reranked_docs[:5]:
-        doc = es_client.get(index=INDEX_NAME, id=doc_id)
-        final_results.append(doc['_source'])
-
+    final_results = [es_client.get(index=INDEX_NAME, id=doc_id)['_source'] for doc_id, _ in reranked_docs[:5]]
+    
     return final_results
 
 def search_elasticsearch(query, search_type):
@@ -189,7 +175,6 @@ def search_elasticsearch(query, search_type):
         vector = model.encode(query)
         search_results = elastic_search_hybrid_rrf('question_text_vector', query, vector)
     else:
-        # For 'Text' search, use keyword search only
         keyword_query = {
             "size": 5,
             "query": {
@@ -228,15 +213,14 @@ and provide your evaluation in parsable JSON without using code blocks:
   "Explanation": "[Provide a brief explanation for your evaluation]"
 }}
 """.strip()
-    # Using OpenAI's GPT-4o-mini for evaluation
     evaluation, tokens, _ = llm(prompt, 'gpt-4o-mini')
     try:
         json_eval = json.loads(evaluation)
         relevance = json_eval.get('Relevance', 'UNKNOWN')
         explanation = json_eval.get('Explanation', 'No explanation provided.')
     except json.JSONDecodeError:
-        relevance = "UNKNOWN"
-        explanation = "Failed to parse evaluation"
+        relevance, explanation = "UNKNOWN", "Failed to parse evaluation"
+    
     return relevance, explanation, tokens
 
 def calculate_openai_cost(model_choice, tokens):

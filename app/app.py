@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 # Constants
 MODEL_OPTIONS = [
-    "gpt-3.5-turbo",
     "gpt-4o-mini",
     "llama3-70b-8192",
+    "llama3-8b-8192"
     # Add other models if needed
 ]
 
@@ -47,12 +47,33 @@ def display_answer(answer_data):
     if answer_data["openai_cost"] > 0:
         st.write(f"OpenAI cost: ${answer_data['openai_cost']:.4f}")
 
+# def handle_feedback(conversation_id):
+#     feedback = st.radio("Was this answer helpful?", ("Yes", "No"))
+#     if feedback:
+#         feedback_value = 1 if feedback == "Yes" else -1
+#         try:
+#             # Attempt to save feedback after ensuring the conversation exists
+#             save_feedback(conversation_id, feedback_value)
+#             st.success("Thank you for your feedback!")
+#         except Exception as e:
+#             logger.error(f"Error saving feedback: {e}")
+#             st.error("An error occurred while saving feedback.")
+
+
 def handle_feedback(conversation_id):
     feedback = st.radio("Was this answer helpful?", ("Yes", "No"))
     if feedback:
         feedback_value = 1 if feedback == "Yes" else -1
-        save_feedback(conversation_id, feedback_value)
-        st.success("Thank you for your feedback!")
+        logger.info(f"Feedback received for conversation {conversation_id}: {feedback_value}")
+        try:
+            # Attempt to save feedback after ensuring the conversation exists
+            save_feedback(conversation_id, feedback_value)
+            st.success("Thank you for your feedback!")
+            logger.info(f"Feedback saved successfully for conversation {conversation_id}")
+        except Exception as e:
+            logger.error(f"Error saving feedback: {e}")
+            st.error("An error occurred while saving feedback.")
+
 
 def display_recent_conversations():
     with st.expander("Recent Conversations"):
@@ -76,8 +97,8 @@ def display_feedback_stats():
     st.write(f"Thumbs down: {feedback_stats['thumbs_down']}")
 
 def main():
-    logger.info("Starting the Course Assistant application")
-    st.title("Course Assistant")
+    logger.info("Starting the application")
+    st.title("Research Knowledge Assistant")
 
     # Initialize session state
     initialize_session_state()
@@ -95,21 +116,24 @@ def main():
                 end_time = time.time()
                 logger.info(f"Answer received in {end_time - start_time:.2f} seconds")
                 display_answer(answer_data)
+
                 # Save conversation to database
                 logger.info("Saving conversation to database")
                 save_conversation(
                     st.session_state.conversation_id, user_input, answer_data
                 )
                 logger.info("Conversation saved successfully")
-                # Generate a new conversation ID for next question
+
+                # Handle feedback after conversation is saved
+                handle_feedback(st.session_state.conversation_id)
+
+                # Only after feedback, generate a new conversation ID for the next question
                 st.session_state.conversation_id = str(uuid.uuid4())
+
             except Exception as e:
                 logger.error(f"Error getting answer: {e}")
                 st.error("An error occurred while processing your request.")
                 return
-
-        # Handle feedback
-        handle_feedback(st.session_state.conversation_id)
 
     # Display recent conversations
     display_recent_conversations()

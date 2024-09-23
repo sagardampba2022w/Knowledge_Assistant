@@ -1,11 +1,12 @@
 streamlit==1.25.0
-psycopg2-binary==2.9.6
+psycopg2-binary
 elasticsearch==8.9.0
-sentence-transformers==2.2.2
-requests==2.31.0
-tqdm==4.66.1
-python-dotenv==1.0.0
+sentence-transformers
+requests
+tqdm
+python-dotenv
 openai
 groq
 --find-links https://download.pytorch.org/whl/cpu/torch_stable.html
 torch==2.3.1+cpu
+pgcli

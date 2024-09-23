@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def fetch_documents():
     logger.info("Fetching documents...")
 
-    file_url = "https://raw.githubusercontent.com/sagardampba2022w/Research_Knowledge_base_Assistant/main/Data_prep/final_data.json"
+    file_url = "https://raw.githubusercontent.com/sagardampba2022w/Research_Knowledge_base_Assistant/refs/heads/main/Data_prep/final_data.json"
     response = requests.get(file_url)
     
     if response.status_code == 200:
