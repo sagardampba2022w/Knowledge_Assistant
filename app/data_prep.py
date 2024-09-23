@@ -18,12 +18,26 @@ ELASTIC_URL = os.getenv("ELASTIC_URL_LOCAL", "http://localhost:9200")
 MODEL_NAME = os.getenv("MODEL_NAME", "multi-qa-MiniLM-L6-cos-v1")
 INDEX_NAME = "insights-questions"  # Updated index name
 
+import json
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
+
 def fetch_documents():
     logger.info("Fetching documents...")
-    # Replace this with your actual document loading logic
-    documents = []  # Load your documents here
-    logger.info(f"Fetched {len(documents)} documents")
-    return documents
+
+    file_url = "https://raw.githubusercontent.com/sagardampba2022w/Research_Knowledge_base_Assistant/main/Data_prep/final_data.json"
+    response = requests.get(file_url)
+    
+    if response.status_code == 200:
+        documents = response.json()
+        logger.info(f"Fetched {len(documents)} documents")
+        return documents
+    else:
+        logger.error(f"Failed to fetch documents. Status code: {response.status_code}")
+        return []
+
 
 def load_model():
     logger.info(f"Loading model: {MODEL_NAME}")

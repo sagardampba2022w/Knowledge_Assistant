@@ -15,6 +15,29 @@ load_dotenv()
 # Configure logging
 logger = logging.getLogger(__name__)
 
+
+# Path to Docker secrets
+openai_api_key_path = '/run/secrets/openai_api_key'
+groq_api_key_path = '/run/secrets/groq_api_key'
+
+# Initialize OpenAI and Groq API keys from Docker secrets or environment variables
+try:
+    with open(openai_api_key_path, 'r') as file:
+        OPENAI_API_KEY = file.read().strip()
+    logger.info("Loaded OpenAI API key from Docker secret.")
+except FileNotFoundError:
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-api-key")
+    logger.warning("OpenAI API key file not found. Using environment variable instead.")
+
+try:
+    with open(groq_api_key_path, 'r') as file:
+        GROQ_API_KEY = file.read().strip()
+    logger.info("Loaded Groq API key from Docker secret.")
+except FileNotFoundError:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY", "your-groq-api-key")
+    logger.warning("Groq API key file not found. Using environment variable instead.")
+
+
 # Constants
 COST_RATES = {
     'gpt-4o-mini': {'prompt': 0.03, 'completion': 0.06},

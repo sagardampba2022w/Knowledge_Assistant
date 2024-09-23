@@ -19,8 +19,8 @@ tz = ZoneInfo("Europe/Berlin")
 # Database connection pool
 db_pool = pool.SimpleConnectionPool(
     1, 20,
-    host=os.getenv("POSTGRES_HOST", "localhost"),
-    database=os.getenv("POSTGRES_DB", "course_assistant"),
+    host=os.getenv("POSTGRES_HOST", "postgres"),
+    database=os.getenv("POSTGRES_DB", "research_assistant"),
     user=os.getenv("POSTGRES_USER", "your_username"),
     password=os.getenv("POSTGRES_PASSWORD", "your_password"),
 )

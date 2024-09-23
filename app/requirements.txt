@@ -5,4 +5,7 @@ sentence-transformers==2.2.2
 requests==2.31.0
 tqdm==4.66.1
 python-dotenv==1.0.0
-openai==0.27.8
+openai
+groq
+--find-links https://download.pytorch.org/whl/cpu/torch_stable.html
+torch==2.3.1+cpu
