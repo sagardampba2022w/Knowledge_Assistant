@@ -108,26 +108,6 @@ def save_conversation(conversation_id, question, answer_data, timestamp=None):
     finally:
         release_db_connection(conn)
 
-# def save_feedback(conversation_id, feedback, timestamp=None):
-#     if timestamp is None:
-#         timestamp = datetime.now(tz)
-#     conn = get_db_connection()
-#     try:
-#         with conn.cursor() as cur:
-#             cur.execute(
-#                 """
-#                 INSERT INTO feedback (conversation_id, feedback, timestamp)
-#                 VALUES (%s, %s, %s)
-#                 """,
-#                 (conversation_id, feedback, timestamp),
-#             )
-#         conn.commit()
-#     except Exception as e:
-#         logger.error(f"Error saving feedback: {e}")
-#     finally:
-#         release_db_connection(conn)
-
-
 def save_feedback(conversation_id, feedback, timestamp=None):
     if timestamp is None:
         timestamp = datetime.now(tz)
@@ -161,7 +141,6 @@ def save_feedback(conversation_id, feedback, timestamp=None):
         logger.error(f"Error saving feedback: {e}")
     finally:
         release_db_connection(conn)
-
 
 def get_recent_conversations(limit=5, relevance=None):
     conn = get_db_connection()

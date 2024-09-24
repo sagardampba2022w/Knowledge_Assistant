@@ -47,11 +47,11 @@ es_client = Elasticsearch(ELASTIC_URL)
 os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 openai_client = OpenAI()
 
-# Initialize Groq client
+# Initialize Groq client if the API key is present
 if GROQ_API_KEY:
     client_groq = Groq(api_key=GROQ_API_KEY)
 else:
-    client_groq = None  # Handle the case when Groq API is not available
+    client_groq = None  # Handle the case where the Groq API key is missing
 
 # Load the SentenceTransformer model
 model_name = 'multi-qa-MiniLM-L6-cos-v1'

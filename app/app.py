@@ -1,7 +1,6 @@
 import uuid
 import time
 import logging
-
 import streamlit as st
 
 from assistant import get_answer
@@ -21,7 +20,6 @@ MODEL_OPTIONS = [
     "gpt-4o-mini",
     "llama3-70b-8192",
     "llama3-8b-8192"
-    # Add other models if needed
 ]
 
 def initialize_session_state():
@@ -47,21 +45,8 @@ def display_answer(answer_data):
     if answer_data["openai_cost"] > 0:
         st.write(f"OpenAI cost: ${answer_data['openai_cost']:.4f}")
 
-# def handle_feedback(conversation_id):
-#     feedback = st.radio("Was this answer helpful?", ("Yes", "No"))
-#     if feedback:
-#         feedback_value = 1 if feedback == "Yes" else -1
-#         try:
-#             # Attempt to save feedback after ensuring the conversation exists
-#             save_feedback(conversation_id, feedback_value)
-#             st.success("Thank you for your feedback!")
-#         except Exception as e:
-#             logger.error(f"Error saving feedback: {e}")
-#             st.error("An error occurred while saving feedback.")
-
-
 def handle_feedback(conversation_id):
-    feedback = st.radio("Was this answer helpful?", ("Yes", "No"), index=-1)
+    feedback = st.radio("Was this answer helpful?", ("", "Yes", "No"), index=0)  # Default to no selection
     if feedback:
         feedback_value = 1 if feedback == "Yes" else -1
         logger.info(f"Feedback received for conversation {conversation_id}: {feedback_value}")
@@ -73,8 +58,6 @@ def handle_feedback(conversation_id):
         except Exception as e:
             logger.error(f"Error saving feedback: {e}")
             st.error("An error occurred while saving feedback.")
-
-
 
 def display_recent_conversations():
     with st.expander("Recent Conversations"):
@@ -119,17 +102,13 @@ def main():
                 display_answer(answer_data)
 
                 # Save conversation to database
-                logger.info("Saving conversation to database")
-                save_conversation(
-                    st.session_state.conversation_id, user_input, answer_data
-                )
+                conversation_id = str(uuid.uuid4())  # Ensure new unique conversation ID
+                logger.info(f"Saving conversation {conversation_id} to database")
+                save_conversation(conversation_id, user_input, answer_data)
                 logger.info("Conversation saved successfully")
 
                 # Handle feedback after conversation is saved
-                handle_feedback(st.session_state.conversation_id)
-
-                # Only after feedback, generate a new conversation ID for the next question
-                st.session_state.conversation_id = str(uuid.uuid4())
+                handle_feedback(conversation_id)
 
             except Exception as e:
                 logger.error(f"Error getting answer: {e}")
