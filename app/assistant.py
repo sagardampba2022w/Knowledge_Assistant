@@ -47,11 +47,13 @@ es_client = Elasticsearch(ELASTIC_URL)
 os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
 openai_client = OpenAI()
 
-# Initialize Groq client if the API key is present
+# Initialize Groq client
 if GROQ_API_KEY:
     client_groq = Groq(api_key=GROQ_API_KEY)
+    logger.info("Groq client initialized successfully.")
 else:
-    client_groq = None  # Handle the case where the Groq API key is missing
+    client_groq = None
+    logger.error("Groq API key missing. Unable to initialize Groq client.")
 
 # Load the SentenceTransformer model
 model_name = 'multi-qa-MiniLM-L6-cos-v1'
@@ -82,10 +84,11 @@ def llm(prompt, model_choice):
             )
             answer = response.choices[0].message.content
             tokens = {
-                'prompt_tokens': response.usage.get('prompt_tokens', 0),
-                'completion_tokens': response.usage.get('completion_tokens', 0),
-                'total_tokens': response.usage.get('total_tokens', 0)
+                'prompt_tokens': getattr(response.usage, 'prompt_tokens', 0),
+                'completion_tokens': getattr(response.usage, 'completion_tokens', 0),
+                'total_tokens': getattr(response.usage, 'total_tokens', 0)
             }
+
         else:
             raise ValueError(f"Groq API key not found, unable to use model: {model_choice}")
     except Exception as e:

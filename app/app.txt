@@ -23,19 +23,8 @@ MODEL_OPTIONS = [
 ]
 
 def initialize_session_state():
-    if 'current_conversation_id' not in st.session_state:
-        st.session_state['current_conversation_id'] = str(uuid.uuid4())
-        logger.info(f"Initialized current_conversation_id: {st.session_state['current_conversation_id']}")
-    if 'last_conversation_id' not in st.session_state:
-        st.session_state['last_conversation_id'] = None
-        logger.info("Initialized last_conversation_id to None")
-    if 'feedback_given' not in st.session_state:
-        st.session_state['feedback_given'] = {}  # Track feedback per conversation
-        logger.info("Initialized feedback_given as empty dictionary")
-    if 'last_question' not in st.session_state:
-        st.session_state['last_question'] = ""
-    if 'last_answer' not in st.session_state:
-        st.session_state['last_answer'] = None
+    st.session_state.setdefault('conversation_id', str(uuid.uuid4()))
+    st.session_state.setdefault('count', 0)
 
 def get_user_input():
     with st.form(key='question_form'):
@@ -57,33 +46,18 @@ def display_answer(answer_data):
         st.write(f"OpenAI cost: ${answer_data['openai_cost']:.4f}")
 
 def handle_feedback(conversation_id):
-    if conversation_id and not st.session_state['feedback_given'].get(conversation_id):
-        st.subheader("Provide Feedback")
-        feedback_button_col1, feedback_button_col2 = st.columns(2)
-
-        with feedback_button_col1:
-            if st.button("👍", key=f"thumbsup_{conversation_id}"):
-                try:
-                    save_feedback(conversation_id, 1)
-                    st.session_state['feedback_given'][conversation_id] = True
-                    st.success("Thank you for your positive feedback!")
-                    logger.info(f"Positive feedback saved for conversation {conversation_id}")
-                except Exception as e:
-                    logger.error(f"Error saving positive feedback: {e}")
-                    st.error("An error occurred while saving your feedback.")
-
-        with feedback_button_col2:
-            if st.button("👎", key=f"thumbsdown_{conversation_id}"):
-                try:
-                    save_feedback(conversation_id, -1)
-                    st.session_state['feedback_given'][conversation_id] = True
-                    st.warning("Thank you for your feedback!")
-                    logger.info(f"Negative feedback saved for conversation {conversation_id}")
-                except Exception as e:
-                    logger.error(f"Error saving negative feedback: {e}")
-                    st.error("An error occurred while saving your feedback.")
-    elif conversation_id:
-        st.write("Feedback already submitted. Thank you!")
+    feedback = st.radio("Was this answer helpful?", ("", "Yes", "No"), index=0)  # Default to no selection
+    if feedback:
+        feedback_value = 1 if feedback == "Yes" else -1
+        logger.info(f"Feedback received for conversation {conversation_id}: {feedback_value}")
+        try:
+            # Attempt to save feedback after ensuring the conversation exists
+            save_feedback(conversation_id, feedback_value)
+            st.success("Thank you for your feedback!")
+            logger.info(f"Feedback saved successfully for conversation {conversation_id}")
+        except Exception as e:
+            logger.error(f"Error saving feedback: {e}")
+            st.error("An error occurred while saving feedback.")
 
 def display_recent_conversations():
     with st.expander("Recent Conversations"):
@@ -125,40 +99,21 @@ def main():
                 answer_data = get_answer(user_input, model_choice, search_type)
                 end_time = time.time()
                 logger.info(f"Answer received in {end_time - start_time:.2f} seconds")
-                
-                # Display answer
                 display_answer(answer_data)
-                
+
                 # Save conversation to database
-                conversation_id = st.session_state['current_conversation_id']
+                conversation_id = str(uuid.uuid4())  # Ensure new unique conversation ID
                 logger.info(f"Saving conversation {conversation_id} to database")
                 save_conversation(conversation_id, user_input, answer_data)
-                st.session_state['last_question'] = user_input
-                st.session_state['last_answer'] = answer_data
-                st.session_state['last_conversation_id'] = conversation_id
                 logger.info("Conversation saved successfully")
 
-                # Prompt feedback immediately after displaying the answer
-                handle_feedback(st.session_state['last_conversation_id'])
-
-                # Prepare for the next conversation
-                st.session_state['current_conversation_id'] = str(uuid.uuid4())
-                logger.info(f"Generated new current_conversation_id: {st.session_state['current_conversation_id']}")
+                # Handle feedback after conversation is saved
+                handle_feedback(conversation_id)
 
             except Exception as e:
                 logger.error(f"Error getting answer: {e}")
                 st.error("An error occurred while processing your request.")
                 return
-
-    # Display feedback for the last conversation if available
-    if st.session_state.get('last_conversation_id') and not submit_button:
-        st.subheader("Last Question:")
-        st.write(st.session_state['last_question'])
-        st.subheader("Answer:")
-        display_answer(st.session_state['last_answer'])
-
-        # Handle feedback for the last conversation
-        handle_feedback(st.session_state['last_conversation_id'])
 
     # Display recent conversations
     display_recent_conversations()
