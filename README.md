@@ -1,5 +1,21 @@
 # Knowledge Base Assistant - Syndicated Research FAQ
 
+## Table of Contents
+- [Overview](#overview)
+- [Dataset](#dataset)
+- [Technologies](#technologies)
+- [RAG based LLM Approach](#rag-based-llm-approach)
+  - [User Question Flow](#user-question-flow)
+- [Evaluations](#evaluations)
+  - [RAG Search Evaluation](#rag-search-evaluation)
+    - [Performance Metrics](#performance-metrics)
+  - [LLM Response Evaluation](#llm-response-evaluation)
+    - [Cosine Similarity](#cosine-similarity)
+    - [LLM as a Judge](#llm-as-a-judge)
+      - [AQA Evaluation (LLM Answer + Original Question Answer)](#aqa-evaluation-llm-answer--original-question-answer)
+      - [QA Evaluation (Original Question + LLM Answer)](#qa-evaluation-original-question--llm-answer)
+
+
 ## Overview
 
 **Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. It helps users quickly find answers related to:
