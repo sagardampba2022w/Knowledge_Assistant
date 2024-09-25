@@ -19,7 +19,9 @@ logger = logging.getLogger(__name__)
 MODEL_OPTIONS = [
     "gpt-4o-mini",
     "llama3-70b-8192",
-    "llama3-8b-8192"
+    "llama3-8b-8192",
+    "llama-3.1-70b-versatile",
+    "mixtral-8x7b-32768"		
 ]
 
 def initialize_session_state():

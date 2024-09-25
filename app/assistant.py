@@ -105,7 +105,7 @@ def build_prompt(query, search_results):
         for doc in search_results
     )
     prompt = f"""
-You're a course teaching assistant. Answer the QUESTION based on the CONTEXT from the FAQ database.
+You're an expert in market research studies. Answer the QUESTION based on the CONTEXT from the FAQ database.
 Use only the facts from the CONTEXT when answering the QUESTION.
 
 QUESTION: {query}
