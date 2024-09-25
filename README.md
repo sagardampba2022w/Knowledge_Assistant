@@ -102,6 +102,8 @@ These approaches were evaluated using the following metrics:
 | Hybrid (Combined QA Vector + Keyword)                 | 0.8608     | 0.6975                     |
 | Hybrid (Combined QA Vector + Keyword) + RRF           | **0.9162** | **0.7835**                 |
 
+> **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Search%20Evaluation)
+
 
 
 ### LLM Response Evaluation
@@ -131,6 +133,8 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | LLaMA-70B     | 0.738416    | 0.757077      | 0.132759           |
 
 ![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Assets/output.png)
+
+
 
 
 These metrics provide insight into how closely the generated responses matched the context retrieved by the RAG search in terms of cosine similarity.
