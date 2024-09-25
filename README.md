@@ -102,7 +102,7 @@ These approaches were evaluated using the following metrics:
 | Hybrid (Combined QA Vector + Keyword)                 | 0.8608     | 0.6975                     |
 | Hybrid (Combined QA Vector + Keyword) + RRF           | **0.9162** | **0.7835**                 |
 
-> **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Search%20Evaluation)
+> **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/tree/main/Evaluation/Search%20Evaluation%20)
 
 
 
