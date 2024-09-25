@@ -134,6 +134,7 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 
 ![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Assets/output.png)
 
+> **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
 
 
 
@@ -172,6 +173,8 @@ These metrics provide insight into how closely the generated responses matched t
 | LLaMA-70B QA    | **93.46**    | 6.23                   | 0.31             |
 
 These evaluations were used to assess the performance of different LLMs in terms of how well they generate relevant and accurate answers based on the user’s query.
+
+> **Link to QA Evaluation Code**: [QA Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/LLM_judge.ipynb)
 
 
 
