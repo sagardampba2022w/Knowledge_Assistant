@@ -14,6 +14,8 @@
     - [LLM as a Judge](#llm-as-a-judge)
       - [AQA Evaluation (LLM Answer + Original Question Answer)](#aqa-evaluation-llm-answer--original-question-answer)
       - [QA Evaluation (Original Question + LLM Answer)](#qa-evaluation-original-question--llm-answer)
+- [How to Test the App in Local Environment Setup](#how-to-test-the-app-in-local-environment-setup)
+
 
 
 ## Overview
@@ -178,3 +180,100 @@ These evaluations were used to assess the performance of different LLMs in terms
 
 
 
+## Testing the app - Local Environment Setup
+
+This guide provides instructions to set up and test the Research Knowledge Base Assistant locally using Docker, PostgreSQL, Streamlit & Grafana.
+
+### Prerequisites
+
+Make sure you have the following installed on your system:
+
+- Docker
+- Docker Compose
+- Python
+
+
+### Steps 
+
+### 1. Clone the Repository
+
+```
+git clone https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant.git
+cd Research_Knowledge_base_Assistant
+```
+
+### 2. Build the Docker Containers
+Build the application containers using Docker Compose:
+```
+docker-compose build
+```
+
+### 3. Start the Containers
+Start all services, including PostgreSQL, Elasticsearch, Streamlit, and Grafana:
+```
+docker-compose up
+```
+### 4. Set Environment Variables
+Ensure the environment variables are set, particularly for PostgreSQL as the we are testing in local environment:
+bash
+```
+export POSTGRES_HOST=localhost
+```
+
+### 5. Initialize the Database and Index Documents
+Run the following Python script in the terminal to initialize the database and index documents in Elasticsearch:
+```
+python data_prep.py
+```
+### 6. Verify Database Connection
+Use pgcli to verify that the PostgreSQL database is running and connected properly:
+
+```
+pgcli -h localhost -p 5432 -U your_username -d research_assistant
+enter your password : your_password
+```
+
+You can run SQL queries to check if the tables are created correctly:
+Start by running below commands after entering password
+```
+ 
+\dt 
+SELECT * FROM conversations LIMIT 10;
+SELECT * FROM feedback LIMIT 10;
+\q
+```
+### 7. Restart Streamlit Service
+If the database or Elasticsearch is not connected properly, you may need to restart the Streamlit container:
+```
+docker-compose stop streamlit
+docker-compose up streamlit
+```
+### 8. Access the Application
+Once everything is set up and the services are running, you can access the Streamlit app in your browser by navigating to:
+http://localhost:8501
+
+### 9. Verify Feedback and Conversations Are Stored
+You can verify if the feedback and conversations are being stored correctly in PostgreSQL by querying the database:
+
+First initiate the database from terminal
+```
+pgcli -h localhost -p 5432 -U your_username -d research_assistant
+enter your password : your_password
+```
+
+Then querying the database
+```
+SELECT * FROM conversations LIMIT 10;
+SELECT * FROM feedback LIMIT 10;
+```
+### 10. Set up grafana dashbord 
+
+Setup dashboard on grafana by 
+- visiting [localhost:3000](http://localhost:8501)
+- connecting same postgres database with host postgres:5432 to access app stored data
+- visualise the stored data in dashboard panels from database
+
+
+### 11. Additional Notes
+Ensure that your .env file is properly configured with necessary API keys and environment variables.
+If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
