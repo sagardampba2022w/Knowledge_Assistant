@@ -2,7 +2,6 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [Dataset](#dataset)
 - [Technologies](#technologies)
 - [RAG based LLM Approach](#rag-based-llm-approach)
   - [User Question Flow](#user-question-flow)
