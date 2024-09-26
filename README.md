@@ -17,35 +17,35 @@
 - [How to Test the App in Local Environment Setup](#how-to-test-the-app-in-local-environment-setup)
 
 
-
 ## Overview
 
-**Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. It helps users quickly find answers related to:
+**Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. The **Knowledge Assistant** is powered by a comprehensive dataset that includes question-answer pairs related to syndicated market research. These question-answer pairs are categorized into the following sections to help users quickly get answers to specific research related queries 
 
-- **Approach**
-- **Methodologies**
-- **Sample Coverage**
-- **Geographic Coverage**
-- **Analysis Types**
+- **General Information**: Questions related to the overall scope and purpose of the research.
+- **Data Collection Methodology**: Information about how the data was collected, including sample size, demographics, and methodology.
+- **Data Access and Reporting**: Focused on the ways users can access reports and the types of reporting available.
+- **Data Usage and Application**: How to apply the data in various contexts for business insights and decision-making.
+- **Technical Support**: Queries about resolving technical issues and troubleshooting data tools.
+- **Subscription and Pricing**: Questions regarding pricing models and subscription options.
+- **Data Segmentation and Custom Queries**: Information on how to segment the data and perform custom queries.
+- **Advanced Analytics and Predictive Modeling**: Addressing advanced techniques for analyzing data, including predictive models.
+- **Competitive Benchmarking**: Questions focused on comparing data with competitor benchmarks.
+- **Consumer Sentiment and Feedback**: How to measure consumer feedback and sentiment analysis through the data.
+- **Data Export and Integration**: Methods of exporting data and integrating with other tools or platforms.
+- **Reporting and Visualization Tools**: Information on the visualization tools available for data interpretation.
+
 
 This makes it easier for anyone, regardless of their expertise in market research, to understand how a study was conducted and what parameters were used, without needing to sift through complex reports manually.
 
 By providing clear explanations on how the research was performed, **Knowledge Assistant** ensures that users can confidently interpret and apply the data in their work, supporting informed decision-making and effective use of market research insights.
 
 
-## Dataset
 
-The **Knowledge Assistant** is powered by a comprehensive dataset that includes question-answer pairs related to syndicated market research. These question-answer pairs are categorized into the following sections:
+You can access the dataset here: [Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/data.csv)
 
-- **General**: Questions related to the overall scope and purpose of the research.
-- **Market**: Focused on market definitions, market scope, and geographic coverage.
-- **Category**: Addresses specific product or service categories covered in the research.
-- **Sample**: Information on the sample size, demographics, and sampling methods used in the research.
-- **Analysis**: Questions that dive into the types of analysis performed, including statistical methods, data interpretation, and segmentation approaches.
+---
 
-By structuring the dataset into these categories, **Knowledge Assistant** is able to provide highly relevant and contextualized answers, ensuring users can quickly find the specific information they need about how syndicated research is conducted.
 
-You can access the dataset here : [Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/data.csv)
 
 
 ## Technologies
@@ -57,10 +57,10 @@ The **Knowledge Assistant** utilizes a modern tech stack designed for scalabilit
 - **Elasticsearch**: Used for efficient full-text search, enabling rapid retrieval of relevant information from large datasets.
 - **Streamlit**: The front-end framework for building an interactive and user-friendly interface where users can ask questions and view results.
 - **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
-- **OpenAI & Groq**: Used as the core large language models (LLMs) to process natural language queries and generate intelligent, contextually accurate responses.
+- **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
-
-## RAG based LLM Approach
+ 
+## Knowledge Assistant -  Pipeline 
 
 The **Knowledge Assistant** follows a structured approach to ensure accurate and contextually relevant responses:
 
