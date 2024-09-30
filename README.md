@@ -1,5 +1,39 @@
 # Knowledge Base Assistant - Syndicated Research FAQ
 
+```
+.
+├── Data_prep
+│   ├── data.csv
+│   ├── final_data.csv
+│   ├── final_data.json
+│   ├── ground_truth_data.csv
+│   └── results.bin
+├── Evaluation
+│   ├── Assets
+│   ├── LLM Evaluation
+│   └── Search Evaluation 
+├── README.md
+├── app
+│   ├── Dockerfile
+│   ├── Readme.md
+│   ├── __pycache__
+│   ├── app.py
+│   ├── app.txt
+│   ├── assistant.py
+│   ├── data_prep.py
+│   ├── db.py
+│   ├── docker-compose.yaml
+│   ├── env.txt
+│   └── requirements.txt
+├── secrets
+│   ├── groq_api_key.txt
+│   ├── openai_api_key.txt
+│   └── postgres_password.txt
+└── structure.txt
+
+8 directories, 20 files
+```
+
 ## Overview
 
 **Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. It helps users quickly find answers related to:
