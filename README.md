@@ -105,7 +105,7 @@ The **Knowledge Assistant** follows a structured approach to ensure accurate and
 
 This combination of vector search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
 
-![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.png)
+![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.jpg)
 
 
 ## Evaluations
