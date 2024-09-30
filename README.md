@@ -23,26 +23,27 @@
 ```
 .
 ├── Data_prep                      # Folder for data preparation files
-│   ├── data.csv                   # Original Q&A  Raw data used 
+│   ├── data.csv                   # Original Q&A raw data used 
 │   ├── final_data.csv             # Final cleaned and processed data in CSV format
 │   ├── final_data.json            # Final cleaned and processed data in JSON format
-│   ├── ground_truth_data.csv      # Ground truth Q&A data for  evaluation
+│   ├── ground_truth_data.csv      # Ground truth Q&A data for evaluation
 │   └── results.bin                # Serialized binary file storing results 
 ├── Evaluation                     # Folder containing evaluation scripts and assets
-│   ├── Assets                     # Miscellaneous files
 │   ├── LLM Evaluation             # Scripts or data for evaluating the language model
 │   └── Search Evaluation          # Scripts or data for evaluating search algorithms or results
 ├── app                            # Application folder containing the app code and configurations
 │   ├── Dockerfile                 # Docker configuration for building the app container
 │   ├── Readme.md                  # Steps to test app locally
 │   ├── app.py                     # Main application script for Streamlit app
-│   ├── assistant.py               # Script for LLM  api calling 
-│   ├── data_prep.py               # Script for indexing data  and intialising db
+│   ├── assistant.py               # Script for LLM API calling 
+│   ├── data_prep.py               # Script for indexing data and initializing the database
 │   ├── db.py                      # Postgres database interaction script
 │   ├── docker-compose.yaml        # Docker Compose file to define and run multi-container Docker applications
 │   ├── env.txt                    # Environment variables configuration notes
 │   └── requirements.txt           # List of dependencies required to run the application
-├── README.md                      # Detailed  project overview and documentation 
+├── Assets                         # Miscellaneous files
+├── README.md                      # Detailed project overview and documentation
+└── .gitignore                     # List of files and directories to ignore in Git
 
 ```
 
@@ -92,7 +93,7 @@ The **Knowledge Assistant** utilizes a modern tech stack designed for scalabilit
 - **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
  
-## Knowledge Assistant -  Pipeline 
+## Knowledge Assistant Deployment 
 
 The **Knowledge Assistant** follows a structured approach to ensure accurate and contextually relevant responses:
 
@@ -103,6 +104,8 @@ The **Knowledge Assistant** follows a structured approach to ensure accurate and
 5. **User Response**: The final response is delivered back to the user in a natural language format.
 
 This combination of vector search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
+
+![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.png)
 
 
 ## Evaluations
@@ -166,7 +169,7 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | LLaMA-8B      | 0.734798    | 0.751954      | 0.124470           |
 | LLaMA-70B     | 0.738416    | 0.757077      | 0.132759           |
 
-![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Assets/output.png)
+![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/output.png)
 
 > **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
 
