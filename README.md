@@ -1,67 +1,34 @@
 # Knowledge Base Assistant - Syndicated Research FAQ
 
-```
-.
-├── Data_prep
-│   ├── data.csv
-│   ├── final_data.csv
-│   ├── final_data.json
-│   ├── ground_truth_data.csv
-│   └── results.bin
-├── Evaluation
-│   ├── Assets
-│   ├── LLM Evaluation
-│   └── Search Evaluation 
-├── README.md
-├── app
-│   ├── Dockerfile
-│   ├── Readme.md
-│   ├── __pycache__
-│   ├── app.py
-│   ├── app.txt
-│   ├── assistant.py
-│   ├── data_prep.py
-│   ├── db.py
-│   ├── docker-compose.yaml
-│   ├── env.txt
-│   └── requirements.txt
-├── secrets
-│   ├── groq_api_key.txt
-│   ├── openai_api_key.txt
-│   └── postgres_password.txt
-└── structure.txt
-
-8 directories, 20 files
-```
-
 ## Overview
 
-**Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. It helps users quickly find answers related to:
+**Knowledge Assistant** is a tool that simplifies access to the underlying structure and methodology of syndicated market research. The **Knowledge Assistant** is powered by a comprehensive dataset that includes question-answer pairs related to syndicated market research. These question-answer pairs are categorized into the following sections to help users quickly get answers to specific research related queries 
 
-- **Approach**
-- **Methodologies**
-- **Sample Coverage**
-- **Geographic Coverage**
-- **Analysis Types**
+- **General Information**: Questions related to the overall scope and purpose of the research.
+- **Data Collection Methodology**: Information about how the data was collected, including sample size, demographics, and methodology.
+- **Data Access and Reporting**: Focused on the ways users can access reports and the types of reporting available.
+- **Data Usage and Application**: How to apply the data in various contexts for business insights and decision-making.
+- **Technical Support**: Queries about resolving technical issues and troubleshooting data tools.
+- **Subscription and Pricing**: Questions regarding pricing models and subscription options.
+- **Data Segmentation and Custom Queries**: Information on how to segment the data and perform custom queries.
+- **Advanced Analytics and Predictive Modeling**: Addressing advanced techniques for analyzing data, including predictive models.
+- **Competitive Benchmarking**: Questions focused on comparing data with competitor benchmarks.
+- **Consumer Sentiment and Feedback**: How to measure consumer feedback and sentiment analysis through the data.
+- **Data Export and Integration**: Methods of exporting data and integrating with other tools or platforms.
+- **Reporting and Visualization Tools**: Information on the visualization tools available for data interpretation.
+
 
 This makes it easier for anyone, regardless of their expertise in market research, to understand how a study was conducted and what parameters were used, without needing to sift through complex reports manually.
 
 By providing clear explanations on how the research was performed, **Knowledge Assistant** ensures that users can confidently interpret and apply the data in their work, supporting informed decision-making and effective use of market research insights.
 
 
-## Dataset
 
-The **Knowledge Assistant** is powered by a comprehensive dataset that includes question-answer pairs related to syndicated market research. These question-answer pairs are categorized into the following sections:
+You can access the dataset here: [Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/data.csv)
 
-- **General**: Questions related to the overall scope and purpose of the research.
-- **Market**: Focused on market definitions, market scope, and geographic coverage.
-- **Category**: Addresses specific product or service categories covered in the research.
-- **Sample**: Information on the sample size, demographics, and sampling methods used in the research.
-- **Analysis**: Questions that dive into the types of analysis performed, including statistical methods, data interpretation, and segmentation approaches.
+---
 
-By structuring the dataset into these categories, **Knowledge Assistant** is able to provide highly relevant and contextualized answers, ensuring users can quickly find the specific information they need about how syndicated research is conducted.
 
-You can access the dataset here : [Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/data.csv)
 
 
 ## Technologies
@@ -73,10 +40,10 @@ The **Knowledge Assistant** utilizes a modern tech stack designed for scalabilit
 - **Elasticsearch**: Used for efficient full-text search, enabling rapid retrieval of relevant information from large datasets.
 - **Streamlit**: The front-end framework for building an interactive and user-friendly interface where users can ask questions and view results.
 - **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
-- **OpenAI & Groq**: Used as the core large language models (LLMs) to process natural language queries and generate intelligent, contextually accurate responses.
+- **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
-
-## RAG based LLM Approach
+ 
+## Knowledge Assistant -  Pipeline 
 
 The **Knowledge Assistant** follows a structured approach to ensure accurate and contextually relevant responses:
 
@@ -120,6 +87,8 @@ These approaches were evaluated using the following metrics:
 | Hybrid (Combined QA Vector + Keyword)                 | 0.8608     | 0.6975                     |
 | Hybrid (Combined QA Vector + Keyword) + RRF           | **0.9162** | **0.7835**                 |
 
+> **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/tree/main/Evaluation/Search%20Evaluation%20)
+
 
 
 ### LLM Response Evaluation
@@ -149,6 +118,9 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | LLaMA-70B     | 0.738416    | 0.757077      | 0.132759           |
 
 ![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/Assets/output.png)
+
+> **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
+
 
 
 These metrics provide insight into how closely the generated responses matched the context retrieved by the RAG search in terms of cosine similarity.
@@ -187,5 +159,104 @@ These metrics provide insight into how closely the generated responses matched t
 
 These evaluations were used to assess the performance of different LLMs in terms of how well they generate relevant and accurate answers based on the user’s query.
 
+> **Link to QA Evaluation Code**: [QA Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/LLM_judge.ipynb)
 
 
+
+## Testing the app - Local Environment Setup
+
+This guide provides instructions to set up and test the Research Knowledge Base Assistant locally using Docker, PostgreSQL, Streamlit & Grafana.
+
+### Prerequisites
+
+Make sure you have the following installed on your system:
+
+- Docker
+- Docker Compose
+- Python
+
+
+### Steps 
+
+### 1. Clone the Repository
+
+```
+git clone https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant.git
+cd Research_Knowledge_base_Assistant
+```
+
+### 2. Build the Docker Containers
+Build the application containers using Docker Compose:
+```
+docker-compose build
+```
+
+### 3. Start the Containers
+Start all services, including PostgreSQL, Elasticsearch, Streamlit, and Grafana:
+```
+docker-compose up
+```
+### 4. Set Environment Variables
+Ensure the environment variables are set, particularly for PostgreSQL as the we are testing in local environment:
+bash
+```
+export POSTGRES_HOST=localhost
+```
+
+### 5. Initialize the Database and Index Documents
+Run the following Python script in the terminal to initialize the database and index documents in Elasticsearch:
+```
+python data_prep.py
+```
+### 6. Verify Database Connection
+Use pgcli to verify that the PostgreSQL database is running and connected properly:
+
+```
+pgcli -h localhost -p 5432 -U your_username -d research_assistant
+enter your password : your_password
+```
+
+You can run SQL queries to check if the tables are created correctly:
+Start by running below commands after entering password
+```
+ 
+\dt 
+SELECT * FROM conversations LIMIT 10;
+SELECT * FROM feedback LIMIT 10;
+\q
+```
+### 7. Restart Streamlit Service
+If the database or Elasticsearch is not connected properly, you may need to restart the Streamlit container:
+```
+docker-compose stop streamlit
+docker-compose up streamlit
+```
+### 8. Access the Application
+Once everything is set up and the services are running, you can access the Streamlit app in your browser by navigating to:
+http://localhost:8501
+
+### 9. Verify Feedback and Conversations Are Stored
+You can verify if the feedback and conversations are being stored correctly in PostgreSQL by querying the database:
+
+First initiate the database from terminal
+```
+pgcli -h localhost -p 5432 -U your_username -d research_assistant
+enter your password : your_password
+```
+
+Then querying the database
+```
+SELECT * FROM conversations LIMIT 10;
+SELECT * FROM feedback LIMIT 10;
+```
+### 10. Set up grafana dashbord 
+
+Setup dashboard on grafana by 
+- visiting [localhost:3000](http://localhost:8501)
+- connecting same postgres database with host postgres:5432 to access app stored data
+- visualise the stored data in dashboard panels from database
+
+
+### 11. Additional Notes
+Ensure that your .env file is properly configured with necessary API keys and environment variables.
+If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
