@@ -1,5 +1,7 @@
 # Knowledge Base Assistant - Syndicated Research FAQ
 
+
+
 ## Table of Contents
 - [Overview](#overview)
 - [Technologies](#technologies)
@@ -14,6 +16,41 @@
       - [AQA Evaluation (LLM Answer + Original Question Answer)](#aqa-evaluation-llm-answer--original-question-answer)
       - [QA Evaluation (Original Question + LLM Answer)](#qa-evaluation-original-question--llm-answer)
 - [How to Test the App in Local Environment Setup](#how-to-test-the-app-in-local-environment-setup)
+
+
+## Project Structure
+
+```
+.
+├── Data_prep
+│   ├── data.csv
+│   ├── final_data.csv
+│   ├── final_data.json
+│   ├── ground_truth_data.csv
+│   └── results.bin
+├── Evaluation
+│   ├── Assets
+│   ├── LLM Evaluation
+│   └── Search Evaluation 
+├── README.md
+├── app
+│   ├── Dockerfile
+│   ├── Readme.md
+│   ├── app.py
+│   ├── app.txt
+│   ├── assistant.py
+│   ├── data_prep.py
+│   ├── db.py
+│   ├── docker-compose.yaml
+│   ├── env.txt
+│   └── requirements.txt
+├── secrets
+│   ├── groq_api_key.txt
+│   ├── openai_api_key.txt
+│   └── postgres_password.txt
+```
+
+
 
 
 ## Overview
