@@ -22,28 +22,28 @@
 
 ```
 .
-├── Data_prep
-│   ├── data.csv
-│   ├── final_data.csv
-│   ├── final_data.json
-│   ├── ground_truth_data.csv
-│   └── results.bin
-├── Evaluation
-│   ├── Assets
-│   ├── LLM Evaluation
-│   └── Search Evaluation 
-├── README.md
-├── app
-│   ├── Dockerfile
-│   ├── Readme.md
-│   ├── app.py
-│   ├── app.txt
-│   ├── assistant.py
-│   ├── data_prep.py
-│   ├── db.py
-│   ├── docker-compose.yaml
-│   ├── env.txt
-│   └── requirements.txt
+├── Data_prep                      # Folder for data preparation files
+│   ├── data.csv                   # Original Q&A  Raw data used 
+│   ├── final_data.csv             # Final cleaned and processed data in CSV format
+│   ├── final_data.json            # Final cleaned and processed data in JSON format
+│   ├── ground_truth_data.csv      # Ground truth Q&A data for  evaluation
+│   └── results.bin                # Serialized binary file storing results 
+├── Evaluation                     # Folder containing evaluation scripts and assets
+│   ├── Assets                     # Miscellaneous files
+│   ├── LLM Evaluation             # Scripts or data for evaluating the language model
+│   └── Search Evaluation          # Scripts or data for evaluating search algorithms or results
+├── app                            # Application folder containing the app code and configurations
+│   ├── Dockerfile                 # Docker configuration for building the app container
+│   ├── Readme.md                  # Steps to test app locally
+│   ├── app.py                     # Main application script for Streamlit app
+│   ├── assistant.py               # Script for LLM  api calling 
+│   ├── data_prep.py               # Script for indexing data  and intialising db
+│   ├── db.py                      # Postgres database interaction script
+│   ├── docker-compose.yaml        # Docker Compose file to define and run multi-container Docker applications
+│   ├── env.txt                    # Environment variables configuration notes
+│   └── requirements.txt           # List of dependencies required to run the application
+├── README.md                      # Detailed  project overview and documentation 
+
 ```
 
 
