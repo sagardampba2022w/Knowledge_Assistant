@@ -3,18 +3,12 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [Technologies](#technologies)
-- [RAG based LLM Approach](#rag-based-llm-approach)
-  - [User Question Flow](#user-question-flow)
+- [Knowledge Assistant Deployment](#knowledge-assistant-deployment)
 - [Evaluations](#evaluations)
   - [RAG Search Evaluation](#rag-search-evaluation)
-    - [Performance Metrics](#rag-search-evaluation---performance-metrics)
   - [LLM Response Evaluation](#llm-response-evaluation)
-    - [Cosine Similarity](#cosine-similarity)
-    - [LLM as a Judge](#llm-as-a-judge)
-      - [AQA Evaluation (LLM Answer + Original Question Answer)](#aqa-evaluation-llm-answer--original-question-answer)
-      - [QA Evaluation (Original Question + LLM Answer)](#qa-evaluation-original-question--llm-answer)
-- [How to Test the App in Local Environment Setup](#testing-the-app---local-environment-setup)
+- [Testing the app - Local Environment Setup](#testing-the-app---local-environment-setup)
+
 
 
 ## Project Structure
@@ -80,16 +74,6 @@ You can access the dataset here: [Dataset Link](https://github.com/sagardampba20
 
 
 
-## Technologies
-
-The **Knowledge Assistant** utilizes a modern tech stack designed for scalability, performance, and ease of deployment. Key technologies include:
-
-- **Python**: The core programming language for developing the backend logic and handling data processing tasks.
-- **Docker & Docker Compose**: For containerization, ensuring a consistent development and production environment, making deployment easier across different platforms.
-- **Elasticsearch**: Used for efficient full-text search, enabling rapid retrieval of relevant information from large datasets.
-- **Streamlit**: The front-end framework for building an interactive and user-friendly interface where users can ask questions and view results.
-- **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
-- **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
  
 ## Knowledge Assistant Deployment 
@@ -103,6 +87,19 @@ The **Knowledge Assistant** follows a structured approach to ensure accurate and
 5. **User Response**: The final response is delivered back to the user in a natural language format.
 
 This combination of vector search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
+
+
+#### Tech stack used
+
+The **Knowledge Assistant** utilizes a modern tech stack designed for scalability, performance, and ease of deployment. Key technologies include:
+
+- **Python**: The core programming language for developing the backend logic and handling data processing tasks.
+- **Docker & Docker Compose**: For containerization, ensuring a consistent development and production environment, making deployment easier across different platforms.
+- **Elasticsearch**: Used for efficient full-text search, enabling rapid retrieval of relevant information from large datasets.
+- **Streamlit**: The front-end framework for building an interactive and user-friendly interface where users can ask questions and view results.
+- **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
+- **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
+
 
 ![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.jpg)
 
