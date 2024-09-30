@@ -44,10 +44,6 @@
 │   ├── docker-compose.yaml
 │   ├── env.txt
 │   └── requirements.txt
-├── secrets
-│   ├── groq_api_key.txt
-│   ├── openai_api_key.txt
-│   └── postgres_password.txt
 ```
 
 
