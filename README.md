@@ -1,5 +1,4 @@
-# Knowledge Base Assistant - Syndicated Research FAQ
-
+# Knowledge Base Assistant - Syndicated Research 
 
 
 ## Table of Contents
@@ -9,13 +8,13 @@
   - [User Question Flow](#user-question-flow)
 - [Evaluations](#evaluations)
   - [RAG Search Evaluation](#rag-search-evaluation)
-    - [Performance Metrics](#performance-metrics)
+    - [Performance Metrics](#rag-search-evaluation---performance-metrics)
   - [LLM Response Evaluation](#llm-response-evaluation)
     - [Cosine Similarity](#cosine-similarity)
     - [LLM as a Judge](#llm-as-a-judge)
       - [AQA Evaluation (LLM Answer + Original Question Answer)](#aqa-evaluation-llm-answer--original-question-answer)
       - [QA Evaluation (Original Question + LLM Answer)](#qa-evaluation-original-question--llm-answer)
-- [How to Test the App in Local Environment Setup](#how-to-test-the-app-in-local-environment-setup)
+- [How to Test the App in Local Environment Setup](#testing-the-app---local-environment-setup)
 
 
 ## Project Structure
@@ -72,7 +71,7 @@ This makes it easier for anyone, regardless of their expertise in market researc
 
 By providing clear explanations on how the research was performed, **Knowledge Assistant** ensures that users can confidently interpret and apply the data in their work, supporting informed decision-making and effective use of market research insights.
 
-
+The **synthentic dataset** for 260 Q&A pairs was generated using CHATGPT model-4o. 
 
 You can access the dataset here: [Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/data.csv)
 
