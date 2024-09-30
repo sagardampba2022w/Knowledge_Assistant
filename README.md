@@ -81,32 +81,48 @@ You can access the dataset here: [Dataset Link](https://github.com/sagardampba20
 The **Knowledge Assistant** follows a structured approach to ensure accurate and contextually relevant responses:
 
 1. **User Question**: The process begins when a user submits a question through the interface.
-2. **Embedding Conversion**: The question is converted into vector embeddings, which represent the semantic meaning of the question.
-3. **Vector Search**: These embeddings are then used to search the original dataset through a vector-based search in **Elasticsearch**, retrieving the most relevant sections of the data.
+2. **Embedding Conversion**: The question/answers pairs is converted into vector embeddings, which represent the semantic meaning of the question.
+3. **Hybrid Search**: These embeddings are then used in combination with traditional keyword search to search the original dataset through **Elasticsearch**, retrieving the most relevant sections of the data.
 4. **LLM Processing**: The retrieved information is passed to the large language models (**OpenAI** & **Groq**), which process the data and generate a refined, coherent response based on the context of the user’s question.
 5. **User Response**: The final response is delivered back to the user in a natural language format.
 
-This combination of vector search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
+This combination of hybrid search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
 
-
-#### Tech stack used
+### Tech stack used
 
 The **Knowledge Assistant** utilizes a modern tech stack designed for scalability, performance, and ease of deployment. Key technologies include:
 
 - **Python**: The core programming language for developing the backend logic and handling data processing tasks.
 - **Docker & Docker Compose**: For containerization, ensuring a consistent development and production environment, making deployment easier across different platforms.
-- **Elasticsearch**: Used for efficient full-text search, enabling rapid retrieval of relevant information from large datasets.
+- **Elasticsearch**: Used for efficient full-text and hybrid search, enabling rapid retrieval of relevant information from large datasets.
 - **Streamlit**: The front-end framework for building an interactive and user-friendly interface where users can ask questions and view results.
 - **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
 - **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
-
 ![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.jpg)
+
 
 
 ## Evaluations
 
-### RAG Search Evaluation
+The evaluation process for the **Knowledge Assistant** begins with generating ground truth data, followed by various evaluation methods to assess the effectiveness of the system's retrieval and response generation.
+
+### 1. Generating Ground Truth Data
+
+Before conducting any evaluations, we first generate ground truth data using the **OpenAI GPT-4o-mini** model. This involves passing a set of questions to the model and recording its generated answers, which serve as the reference or "ground truth" for comparing the results of other models and retrieval methods.
+
+All 260 original QA pairs are provided to the LLM (GPT-4o-mini) to generate 5 additional questions for each QA pair. The generated dataset, now containing 1,320 QA pairs, is stored and used as the standard for evaluating the performance of various retrieval methods and models.
+
+This ground truth data is critical as it provides a benchmark for evaluating how well other models and search approaches perform in retrieving relevant information.
+.
+Link to ground truth dataset 
+![Ground_truth_data](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/ground_truth_data.csv)
+
+---
+
+
+
+### 2. RAG Search Evaluation
 
 Multiple approaches were evaluated using **Elasticsearch** to optimize the retrieval of relevant data. The approaches tested include:
 
@@ -114,13 +130,14 @@ Multiple approaches were evaluated using **Elasticsearch** to optimize the retri
 2. **Vector Search (with matching Question)**: Using vector embeddings of the user's question to retrieve semantically similar content.
 3. **Vector Search (with matching Answers)**: Using embeddings of potential answers to retrieve documents that contain semantically related answers.
 4. **Vector Search (with matching Question and Answers)**: Combining both question and answer embeddings for a more comprehensive retrieval approach.
-5. **Hybrid Search (Vector  & Text Search)**: A combined approach that integrates both vector-based and traditional text search for improved accuracy.
+5. **Hybrid Search (Vector & Text Search)**: A combined approach that integrates both vector-based and traditional text search for improved accuracy.
 6. **Hybrid Search (Vector & Text Search) + RRF Implementation**: Incorporating Rank Reciprocal Fusion (RRF) to merge and rank results from different search methods for optimal relevance.
 
 These approaches were evaluated using the following metrics:
 - **Hit Rate**: The percentage of relevant documents retrieved.
 - **MRR (Mean Reciprocal Rank)**: A measure of how well the ranking of the relevant results was optimized.
 
+---
 
 ### RAG Search Evaluation - Performance Metrics
 
@@ -137,16 +154,13 @@ These approaches were evaluated using the following metrics:
 
 > **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/tree/main/Evaluation/Search%20Evaluation%20)
 
+---
 
+### 3. LLM Response Evaluation
 
-### LLM Response Evaluation
-
-
-
-The LLM responses were evaluated using two methods **Cosine Similarity** & **LLM as a Judge**:
+The LLM responses were evaluated using two methods: **Cosine Similarity** and **LLM as a Judge**.
 
 1. **LLM Eval (Cosine Similarity)**: This measured the similarity between the retrieved context and the generated response using cosine similarity to ensure the response aligned with the relevant parts of the data.
-
 
 - **LLMs Tested**:
   - OpenAI GPT-4o
@@ -155,7 +169,7 @@ The LLM responses were evaluated using two methods **Cosine Similarity** & **LLM
   - LLaMA 8B
   - LLaMA 70B
 
-The following table shows the evaluation stats for different LLMs based on **Mean **, **Median **, and **Standard Deviation** for cosine values:
+The following table shows the evaluation stats for different LLMs based on **Mean**, **Median**, and **Standard Deviation** for cosine values:
 
 | Model         | Mean        | Median        | Standard Deviation |
 |---------------|-------------|---------------|--------------------|
@@ -169,23 +183,18 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 
 > **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
 
+---
 
-
-These metrics provide insight into how closely the generated responses matched the context retrieved by the RAG search in terms of cosine similarity.
-
-
-  
 2. **LLM as a Judge (Relevance)**: This evaluation method was split into two distinct processes:
-   
-   - **AQA (Answer + Question Answer)**: In this approach, the original QA pair along with the LLM-generated answer were passed to another LLM (GPT-4o-mini) to evaluate the relevance of the response.
-   - **QA (Question + Answer)**: In this approach, only the question and the LLM-generated answer were passed to the judge, without the original answer, for relevance evaluation.
+
+- **AQA (Answer + Question Answer)**: In this approach, the original QA pair along with the LLM-generated answer were passed to another LLM (GPT-4o-mini) to evaluate the relevance of the response.
+- **QA (Question + Answer)**: In this approach, only the question and the LLM-generated answer were passed to the judge, without the original answer, for relevance evaluation.
 
 - **LLMs Tested**:
   - OpenAI GPT-4o
   - OpenAI GPT-3.5
   - LLaMA 8B
   - LLaMA 70B
-
 
 ##### AQA Evaluation (LLM Answer + Original Question Answer)
 
