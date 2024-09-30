@@ -99,7 +99,7 @@ The **Knowledge Assistant** utilizes a modern tech stack designed for scalabilit
 - **Grafana**: Employed for monitoring system performance and health, with **PostgreSQL** serving as the backend database to store monitoring data.
 - **OpenAI & Groq**: API's used to access core large language models (LLMs) gpt 4o, 4o mini, Llama 8b & 70b to process natural language queries and generate intelligent, contextually accurate responses.
 
-![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment.jpg)
+![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment_v2.jpg)
 
 
 
