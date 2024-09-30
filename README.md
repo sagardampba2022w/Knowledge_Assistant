@@ -114,12 +114,10 @@ Before conducting any evaluations, we first generate ground truth data using the
 All 260 original QA pairs are provided to the LLM (GPT-4o-mini) to generate 5 additional questions for each QA pair. The generated dataset, now containing 1,320 QA pairs, is stored and used as the standard for evaluating the performance of various retrieval methods and models.
 
 This ground truth data is critical as it provides a benchmark for evaluating how well other models and search approaches perform in retrieving relevant information.
-.
-Link to ground truth dataset 
-![Ground_truth_data](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/ground_truth_data.csv)
+
+You can access the ground truth data here: [Ground Truth Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/ground_truth_data.csv)
 
 ---
-
 
 
 ### 2. RAG Search Evaluation
