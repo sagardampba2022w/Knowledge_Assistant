@@ -202,6 +202,8 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | LLaMA-8B AQA    | **75.92**    | 23.46                  | 0.62             |
 | LLaMA-70B AQA   | **75.92**    | 23.69                  | 0.38             |
 
+![Relevance Evaluation (LLM Answer + Original Question + Answer)](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/output_aqa.png)
+
 ##### QA Evaluation (Original Question + LLM Answer)
 
 | LLM Model       | Relevant (%) | Partially Relevant (%) | Non-Relevant (%) |
@@ -210,6 +212,8 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | GPT-3.5 QA      | **89.38**    | 10.31                  | 0.31             |
 | LLaMA-8B QA     | **92.85**    | 7.08                   | 0.08             |
 | LLaMA-70B QA    | **93.46**    | 6.23                   | 0.31             |
+
+![Relevance Evaluation (LLM Answer + Original Question )](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/output_qa.png)
 
 These evaluations were used to assess the performance of different LLMs in terms of how well they generate relevant and accurate answers based on the user’s query.
 
