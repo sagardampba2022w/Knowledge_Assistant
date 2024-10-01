@@ -176,7 +176,7 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 | LLaMA-8B      | 0.734798    | 0.751954      | 0.124470           |
 | LLaMA-70B     | 0.738416    | 0.757077      | 0.132759           |
 
-![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/output.png)
+![Cosine Similarity Chart](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/output_cosine.png)
 
 > **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
 
