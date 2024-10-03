@@ -85,10 +85,6 @@ The **Knowledge Assistant** follows a structured approach to ensure accurate and
 
 This combination of hybrid search and LLM response generation ensures that users receive accurate, relevant answers to their questions, derived from complex market research data.
 
-### Tech stack used
-
-The **Knowledge Assistant** utilizes a modern tech stack designed for scalability, performance, and ease of deployment. Key technologies include:
-
 
 
 ### Tech Stack Used
