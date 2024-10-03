@@ -102,6 +102,7 @@ The Knowledge Assistant utilizes a modern tech stack designed for scalability, p
 
 ![App Deployment](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Assets/deployment_v2.png)
 
+---
 
 ## Evaluations
 
@@ -117,7 +118,7 @@ This ground truth data is critical as it provides a benchmark for evaluating how
 
 You can access the ground truth data here: [Ground Truth Dataset Link](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Data_prep/ground_truth_data.csv)
 
----
+
 
 
 ### 2. RAG Search Evaluation
@@ -135,7 +136,7 @@ These approaches were evaluated using the following metrics:
 - **Hit Rate**: The percentage of relevant documents retrieved.
 - **MRR (Mean Reciprocal Rank)**: A measure of how well the ranking of the relevant results was optimized.
 
----
+
 
 ### RAG Search Evaluation - Performance Metrics
 
@@ -152,7 +153,7 @@ These approaches were evaluated using the following metrics:
 
 > **Link to RAG Search Evaluation Code**: [RAG Search Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/tree/main/Evaluation/Search%20Evaluation%20)
 
----
+
 
 ### 3. LLM Response Evaluation
 
@@ -181,7 +182,7 @@ The following table shows the evaluation stats for different LLMs based on **Mea
 
 > **Link to Cosine Similarity Code**: [Cosine Similarity Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/Offline_RAG_Eval.ipynb)
 
----
+
 
 2. **LLM as a Judge (Relevance)**: This evaluation method was split into two distinct processes:
 
@@ -220,7 +221,7 @@ These evaluations were used to assess the performance of different LLMs in terms
 
 > **Link to QA Evaluation Code**: [QA Evaluation Notebook](https://github.com/sagardampba2022w/Research_Knowledge_base_Assistant/blob/main/Evaluation/LLM%20Evaluation/LLM_judge.ipynb)
 
-
+---
 
 ## Testing the app - Local Environment Setup
 
