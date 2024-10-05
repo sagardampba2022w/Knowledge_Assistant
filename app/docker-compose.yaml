@@ -40,7 +40,7 @@ services:
       - MODEL_NAME=${MODEL_NAME}
       - INDEX_NAME=${INDEX_NAME}
       - OPENAI_API_KEY=${OPENAI_API_KEY}    # Using environment variable directly
-      - GROQ_API_KEY= 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  # Using environment variable directly
+      - GROQ_API_KEY=${GROQ_API_KEY}  # Using environment variable directly
     ports:
       - "${STREAMLIT_PORT:-8501}:8501"
     depends_on:

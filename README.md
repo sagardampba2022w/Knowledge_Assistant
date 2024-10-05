@@ -226,6 +226,7 @@ These evaluations were used to assess the performance of different LLMs in terms
 
 
 
+
 ## Testing the app - Local Environment Setup
 
 This guide provides instructions to set up and test the Research Knowledge Base Assistant locally using Docker, PostgreSQL, Streamlit & Grafana.
@@ -312,14 +313,58 @@ Then querying the database
 SELECT * FROM conversations LIMIT 10;
 SELECT * FROM feedback LIMIT 10;
 ```
-### 10. Set up grafana dashbord 
 
-Setup dashboard on grafana by 
-- visiting [localhost:3000](http://localhost:8501)
-- connecting same postgres database with host postgres:5432 to access app stored data
-- visualise the stored data in dashboard panels from database
+### 10. Set up Grafana Dashboard 
+
+To set up the Grafana dashboard, follow these steps:
+
+a. **Visit the Grafana Portal**:
+   - Open [localhost:3000](http://localhost:8501) in your browser.
+
+b. **Login**:
+   - Enter the login credentials:
+     - **Username**: `admin` (as set in `docker-compose`)
+     - **Password**: `admin` (as set in `docker-compose`)
+   - Optional: You can skip setting a new password since this is for local testing.
+
+c. **Connect PostgreSQL Data Source**:
+   - After logging in, you will need to connect to the PostgreSQL data source:
+     - **Name**: Set a source name (choose a descriptive name).
+     - **Host URL**: `postgres:5432` (as specified in the environment file).
+     - **Database Name**: `research_assistant` (as specified in the environment file).
+     - **Username**: `your_assistant`.
+     - **Password**: `your_password`.
+     - **TLS/SSL Mode**: Set to `disable`.
+     - Click **Save and Test** to verify the connection.
+
+d. **Visualize Data**:
+   - Use SQL queries to visualize the stored data in dashboard panels. Here are some example queries:
+
+     **Example 1: Response Time Query**
+     ```sql
+     SELECT
+       timestamp AS time,
+       response_time
+     FROM conversations
+     ORDER BY timestamp
+     ```
+
+     **Example 2: Relevance Distribution Query**
+     ```sql
+     SELECT
+       relevance,
+       COUNT(*) as count
+     FROM conversations
+     GROUP BY relevance
+     ```
+
+e. **Additional SQL Queries**:
+   - For a detailed list of SQL queries to use in Grafana dashboard panels, refer to the following link:
+     - [SQL Queries for Grafana Dashboard](https://github.com/sagardampba2022w/Knowledge_Assistant/blob/main/app/grafana_sql_queries.md)
 
 
 ### 11. Additional Notes
-Ensure that your .env file is properly configured with necessary API keys and environment variables.
-If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
+- Ensure that your .env file is properly configured with necessary API keys and environment variables. Refer to list of env variables to be set
+[List of enivronment variables](https://github.com/sagardampba2022w/Knowledge_Assistant/blob/main/app/environment_variables.md)
+- If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
+- Currently elastic search memory usage is fixed to 512mb as "ES_JAVA_OPTS=-Xms512m -Xmx512m", feel free to change or remove this from docker-compose file in case datasize increases.
