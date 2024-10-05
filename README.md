@@ -361,5 +361,7 @@ e. **Additional SQL Queries**:
 
 
 ### 11. Additional Notes
-Ensure that your .env file is properly configured with necessary API keys and environment variables.
-If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
+- Ensure that your .env file is properly configured with necessary API keys and environment variables. Refer to list of env variables to be set
+[List of enivronment variables](https://github.com/sagardampba2022w/Knowledge_Assistant/blob/main/app/environment_variables.md)
+- If you encounter errors related to keys or secrets, verify that your API keys are correctly set in the environment or .env file.
+- Currently elastic search memory usage is fixed to 512mb as "ES_JAVA_OPTS=-Xms512m -Xmx512m", feel free to change or remove this from docker-compose file in case datasize increases.
